@@ -1,0 +1,613 @@
+
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Listening-Based Speaking | LingoLift</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue-light: #cce3ff;
+      --blue-mid: #99c2ff;
+      --blue-dark: #3366cc;
+      --text-dark: #1b2a3a;
+      --text-light: #ffffff;
+      --glass-bg: rgba(255, 255, 255, 0.15);
+      --bg-dark: #0f1c2e;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    } 
+    body { 
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, var(--blue-light), var(--blue-mid), var(--blue-dark));
+      color: var(--text-dark);
+      transition: background 0.5s ease, color 0.5s ease;
+      min-height: 100vh;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+      color: var(--text-light);
+    }
+
+    .menu-btn {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      width: 30px;
+      height: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    .menu-btn span {
+      display: block;
+      height: 5px;
+      background-color: var(--blue-dark);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .dark-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background-color: var(--blue-dark);
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 100;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .auth-buttons-top {
+      position: fixed;
+      top: 1rem;
+      right: 5rem;
+      display: flex;
+      gap: 0.8rem;
+      z-index: 100;
+    }
+
+    .auth-buttons-top button {
+      background-color: var(--blue-dark);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .slide-menu {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 250px;
+      height: 100vh;
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      padding: 2rem 1rem;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      transition: left 0.4s ease;
+      z-index: 99;
+      overflow-y: auto;
+    }
+
+    .slide-menu.active {
+      left: 0;
+    }
+
+    .slide-menu h3 {
+      margin-bottom: 1rem;
+      color: var(--blue-dark);
+      font-size: 1.3rem;
+    }
+
+    .slide-menu ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .slide-menu ul li {
+      margin-bottom: 1rem;
+      font-weight: 600;
+      background-color: rgba(255,255,255,0.1);
+      padding: 0.7rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .main-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      color: var(--blue-dark);
+      margin-bottom: 1rem;
+    }
+
+    .tagline {
+      font-size: 1.3rem;
+      color: #3c5e7e;
+      font-weight: 500;
+    }
+
+    .card-layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .paragraph-card, .recorder-card {
+      flex: 1 1 45%;
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(6px);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .paragraph-card {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .recorder-card h3 {
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: var(--blue-dark);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 0.5rem 0;
+      transition: transform 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    #micWave {
+      display: flex;
+      gap: 5px;
+      margin: 1rem 0;
+    }
+
+    .wave {
+      width: 6px;
+      height: 20px;
+      background: var(--blue-dark);
+      animation: waveAnim 1s infinite ease-in-out;
+    }
+
+    .wave:nth-child(2) { animation-delay: 0.2s; }
+    .wave:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes waveAnim {
+      0%, 100% { height: 10px; }
+      50% { height: 30px; }
+    }
+
+    .result-panel {
+      margin-top: 1rem;
+      background-color: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .card-layout {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<html>
+  <div class="menu-btn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+  <div class="auth-buttons-top">
+   
+  </div>
+  <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+  <nav id="slideMenu" class="slide-menu">
+    <button class="close-menu" onclick="toggleMenu()">✖</button>
+    <h3>Features</h3>
+    <ul>
+      <li><a href="translator.html">🌐 Language Translator</a></li>
+      <li><a href="extempore.html">⏱ Extempore (1 min)</a></li>
+      <li><a href="listening-speaking.html">🎧 Listening-Based Speaking</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <header>
+      <h1>🎧 Listening-Based Speaking</h1>
+      <p class="tagline">Practice speaking with real-time feedback</p>
+    </header>
+
+    <section class="card-layout">
+      <div class="paragraph-card">
+        <h3>Practice Paragraph</h3>
+        <p id="paragraphText">Loading paragraph...</p>
+        <button onclick="loadParagraph()">Next Paragraph</button>
+      </div>
+
+      <div class="recorder-card">
+        <h3>Start Speaking</h3>
+        <div id="micWave" style="display:none;">
+            //i added
+
+            <div id="spoken-display" style="margin-top: 1rem; font-size: 1rem;"></div>
+
+<div id="mistakenWordsPanel" style="margin-top: 1rem; display: none;">
+  <h3 style="color: #cc0000; font-weight: 600;">❌ Mistaken Words:</h3>
+  <p id="mistakenWordsList" style="color: #cc0000; font-weight: 500;"></p>
+</div>
+<p id="pronunciationHints" style="margin-top: 0.5rem; color: #3366cc; font-weight: 500;"></p>
+
+ <!-- //yhntk -->
+           <div class="wave"></div><div class="wave"></div><div class="wave"></div> -->
+        </div>
+       
+
+        <button onclick="startSpeechRecognition()">🎤 Start</button>
+<button id="stopBtn" onclick="stopSpeechRecognition()" style="display:none;">⏹ Stop</button>
+        <p id="liveText">Speech will appear here...</p>
+
+        <div class="result-panel">
+          <p id="accuracyResult">Accuracy: —</p>
+          <p id="feedbackResult">Feedback: —</p>
+          <p id="verifiedMistakes" style="margin-top: 0.5rem; color: #cc0000; font-weight: 500;"></p>
+          <button onclick="startSpeechRecognition()">Try Again</button>
+          <button onclick="loadParagraph()">Next Paragraph</button>
+        </div>
+    </div>
+    <!-- Menu Button --> 
+<div class="menu-btn" onclick="toggleMenu()">
+  <span></span>
+  <span></span>
+  <span></span>
+</div> 
+
+
+<!-- Dark Mode Toggle -->
+<button class="dark-toggle" onclick="toggleDarkMode()">🌙</button> 
+
+<!-- Sidebar Menu -->
+<nav id="slideMenu" class="slide-menu">
+  <button class="close-menu" onclick="toggleMenu()">✖</button>  
+
+    <h3>Features</h3>
+  <ul>
+    <li>📊 Pronunciation Scoring</li>
+    <li>📚 Learning Module</li>
+    <li><a href="translator.html" style="text-decoration:none;color:inherit;">🌐 Language Translator</a></li>
+    <li><div class="feature-card" onclick="openWordPopup()">🗣 Word of the Day</div></li>
+    <li>📰 News Feed</li>
+    <li>✉ Email Grammar Analysis</li>
+    <li>💼 HR Interview Practice</li>
+    <li>🧑‍🤝‍🧑 Group Discussion Review</li>
+    <li>❓ MCQ Quiz</li>
+    <li><a href="extempore.html" style="text-decoration:none;color:inherit;">⏱ Extempore (1 min)</a></li>
+    <li>🎧 Listening-Based Speaking</li>
+    <li>🤖 AI Chatbot</li>
+  </ul>
+
+</nav>
+
+
+
+
+
+
+
+<script>
+  <!-- // ---------------- CONFIG ---------------- -->
+  const TRANSCRIBE_API_URL = ""; 
+  // SILENCE_TIMEOUT_MS removed to prevent auto-stop for long paragraphs
+  // ----------------------------------------
+
+  const paragraphs = [
+    `In today's digital age the internet is woven into nearly every part of our daily routine. It enables people to communicate instantly across great distances, attend virtual classes from their homes, access up-to-date research and news, and perform tasks that previously required long hours of manual effort. Digital tools have transformed how businesses operate, how students learn, and how families connect. Yet with such power comes responsibility: we must prioritize privacy, verify facts before sharing, and design services that are accessible to all. When communities collaborate, technology helps amplify positive impact, improving healthcare, education and economic opportunities. Thoughtful use and continuous learning will ensure the benefits of these tools reach people in both cities and rural areas alike.`
+  ];
+
+   let paragraphOriginal = "";
+
+  // ---------------- PARAGRAPH ----------------
+  function loadParagraph() {
+    paragraphOriginal = paragraphs[Math.floor(Math.random() * paragraphs.length)];
+    document.getElementById("paragraphText").textContent = paragraphOriginal;
+    resetResults();
+  }
+
+  window.onload = loadParagraph;
+
+  // ---------------- SPEECH RECOGNITION ----------------
+  let recognition, isRecording = false, finalTranscript = "", mediaRecorder = null, audioChunks = [], mediaStream = null;
+
+  async function startSpeechRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return alert("Speech Recognition not supported in this browser.");
+
+    try {
+      mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioChunks = [];
+      mediaRecorder = new MediaRecorder(mediaStream);
+      mediaRecorder.ondataavailable = (e) => e.data.size && audioChunks.push(e.data);
+    } catch (err) {
+      console.warn("Microphone access issue:", err);
+    }
+
+    recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+    finalTranscript = "";
+
+    resetResults();
+    document.getElementById("liveText").textContent = "Listening...";
+    isRecording = true;
+    document.getElementById("micWave").style.display = "flex";
+    document.getElementById("stopBtn").style.display = "inline-block";
+
+    recognition.onresult = (event) => {
+      let interim = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const part = event.results[i][0].transcript;
+        if (event.results[i].isFinal) finalTranscript += part + " ";
+        else interim += part;
+      }
+      const combined = (finalTranscript + interim).trim();
+      document.getElementById("liveText").textContent = combined;
+      updateLiveDisplays(combined);
+    };
+
+    recognition.onerror = (e) => console.error("Recognition error:", e.error);
+
+    recognition.onend = () => {
+      isRecording = false;
+      document.getElementById("micWave").style.display = "none";
+      document.getElementById("stopBtn").style.display = "none";
+      analyzePronunciation(finalTranscript.trim());
+    };
+
+    recognition.start();
+  }
+
+  function stopSpeechRecognition() {
+    if (recognition && isRecording) recognition.stop();
+  }
+
+  // ---------------- DISPLAY & LOGIC ----------------
+  function updateLiveDisplays(transcript) {
+    const originalWords = cleanAndSplit(paragraphOriginal);
+    const spokenWords = cleanAndSplit(transcript);
+    const alignment = alignWordSequences(originalWords, spokenWords);
+
+    const html = alignment.map(a => {
+      if (a.original && (a.op === "match" || a.op === "close")) return `<span style="color:green;font-weight:600;">${escapeHtml(a.original)}</span>`;
+      if (a.original && (a.op === "sub" || a.op === "del")) return `<span style="color:red;font-weight:600;">${escapeHtml(a.original)}</span>`;
+      if (!a.original && a.spoken) return `<span style="color:gray;">(${escapeHtml(a.spoken)})</span>`;
+      return escapeHtml(a.original || "");
+    }).join(" ");
+
+    document.getElementById("paragraphText").innerHTML = html;
+  }
+
+  function analyzePronunciation(transcript) {
+    const originalWords = cleanAndSplit(paragraphOriginal);
+    const spokenWords = cleanAndSplit(transcript);
+    if (!spokenWords.length) return;
+
+    const trimmedOriginal = originalWords.slice(0, spokenWords.length);
+    const alignment = alignWordSequences(trimmedOriginal, spokenWords);
+
+    const missed = alignment.filter(a => a.original && !(a.op === 'match' || a.op === 'close')).map(a => a.original);
+
+    const html = alignment.map(a => {
+      if (a.original && (a.op === "match" || a.op === "close")) return `<span style="color:green;font-weight:600;">${escapeHtml(a.original)}</span>`;
+      if (a.original && (a.op === "sub" || a.op === "del")) return `<span style="color:red;font-weight:600;">${escapeHtml(a.original)}</span>`;
+      if (!a.original && a.spoken) return `<span style="color:gray;">(${escapeHtml(a.spoken)})</span>`;
+      return escapeHtml(a.original || "");
+    }).join("");
+    document.getElementById("paragraphText").innerHTML = html;
+
+    const accuracy = Math.floor(((trimmedOriginal.length - missed.length) / trimmedOriginal.length) * 100);
+    const feedback = accuracy > 90
+      ? "🌟 Excellent clarity and pronunciation!"
+      : accuracy > 75
+        ? "👍 Good effort! Try to pronounce longer or complex words more clearly."
+        : "💪 Keep practicing! Focus on pacing and clarity.";
+
+    document.getElementById("accuracyResult").textContent = `Accuracy: ${accuracy}%`;
+    document.getElementById("feedbackResult").textContent = feedback;
+
+    if (missed.length > 0) {
+      document.getElementById("mistakenWordsPanel").style.display = "block";
+      document.getElementById("mistakenWordsList").textContent = missed.join(", ");
+      document.getElementById("verifiedMistakes").textContent = `Verified Mistaken Words: ${missed.join(", ")}`;
+    } else {
+      document.getElementById("mistakenWordsPanel").style.display = "none";
+      document.getElementById("verifiedMistakes").textContent = "";
+    }
+  }
+
+  // ---------------- HELPERS ----------------
+  function cleanAndSplit(text) {
+    return text.toLowerCase().replace(/[.,!?]/g, "").trim().split(/\s+/).filter(Boolean);
+  }
+
+  function alignWordSequences(orig, spoke) {
+    const n = orig.length, m = spoke.length;
+    const dp = Array(n + 1).fill(0).map(() => Array(m + 1).fill(0));
+    const parent = Array(n + 1).fill(null).map(() => Array(m + 1).fill(null));
+
+    for (let i = 0; i <= n; i++) dp[i][0] = i;
+    for (let j = 0; j <= m; j++) dp[0][j] = j;
+
+    for (let i = 1; i <= n; i++) {
+      for (let j = 1; j <= m; j++) {
+        const cost = isSimilar(orig[i-1], spoke[j-1]) ? 0 : 1;
+        const ops = [
+          { cost: dp[i-1][j] + 1, op: 'del' },
+          { cost: dp[i][j-1] + 1, op: 'ins' },
+          { cost: dp[i-1][j-1] + cost, op: cost === 0 ? 'match' : 'sub' }
+        ];
+        ops.sort((a,b) => a.cost - b.cost);
+        dp[i][j] = ops[0].cost;
+        parent[i][j] = ops[0].op;
+      }
+    }
+
+    let i = n, j = m, align = [];
+    while (i > 0 || j > 0) {
+      const op = parent[i]?.[j];
+      if (!op) break;
+      if (op === "match" || op === "sub") { align.unshift({ original: orig[i-1], spoken: spoke[j-1], op }); i--; j--; }
+      else if (op === "del") { align.unshift({ original: orig[i-1], spoken: null, op }); i--; }
+      else { align.unshift({ original: null, spoken: spoke[j-1], op }); j--; }
+    }
+    return align;
+  }
+
+  function isSimilar(a,b) {
+    if (!a||!b) return false;
+    if (a === b) return true;
+    return levenshtein(a,b) <= 1;
+  }
+
+  function levenshtein(a,b) {
+    const la = a.length, lb = b.length;
+    const dp = Array(la+1).fill(0).map(() => Array(lb+1).fill(0));
+    for(let i=0;i<=la;i++) dp[i][0]=i;
+    for(let j=0;j<=lb;j++) dp[0][j]=j;
+    for(let i=1;i<=la;i++){
+      for(let j=1;j<=lb;j++){
+        const cost = a[i-1] === b[j-1] ? 0 : 1;
+        dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost);
+      }
+    }
+    return dp[la][lb];
+  }
+
+  function resetResults() {
+    document.getElementById("paragraphText").textContent = paragraphOriginal;
+    document.getElementById("accuracyResult").textContent = "Accuracy: —";
+    document.getElementById("feedbackResult").textContent = "Feedback: —";
+    document.getElementById("liveText").textContent = "Speech will appear here...";
+    document.getElementById("mistakenWordsList").textContent = "";
+    document.getElementById("verifiedMistakes").textContent = "";
+    document.getElementById("mistakenWordsPanel").style.display = "none";
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+
+
+
+  function toggleMenu() {
+  const menu = document.getElementById("slideMenu");
+  const menuBtn = document.querySelector(".menu-btn");
+  menu.classList.toggle("active");
+  menuBtn.classList.toggle("active");
+}
+
+document.addEventListener("click", function(event) {
+  const menu = document.getElementById("slideMenu");
+  const menuBtn = document.querySelector(".menu-btn");
+  if (menu.classList.contains("active") &&
+      !menu.contains(event.target) &&
+      !menuBtn.contains(event.target)) {
+    menu.classList.remove("active");
+    menuBtn.classList.remove("active");
+  }
+});
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") {
+    const menu = document.getElementById("slideMenu");
+    const menuBtn = document.querySelector(".menu-btn");
+    if (menu.classList.contains("active")) {
+      menu.classList.remove("active");
+      menuBtn.classList.remove("active");
+    }
+  }
+});
+
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+  const btn = document.querySelector('.dark-toggle');
+  btn.textContent = document.body.classList.contains('dark-mode') ? '☀' : '🌙';
+}
+
+const wordList = [
+  {
+    word: "Eloquent",
+    meaning: "Fluent or persuasive in speaking or writing",
+    synonyms: ["Articulate", "Expressive"],
+    antonyms: ["Inarticulate", "Mute"]
+  },
+  {
+    word: "Resilient",
+    meaning: "Able to recover quickly from difficulties",
+    synonyms: ["Tough", "Adaptable"],
+    antonyms: ["Fragile", "Vulnerable"]
+  },
+  {
+    word: "Innovate",
+    meaning: "To introduce new ideas or methods",
+    synonyms: ["Invent", "Pioneer"],
+    antonyms: ["Imitate", "Stagnate"]
+  }
+];
+
+function getWordOfTheDay() {
+  const today = new Date().getDate();
+  const index = today % wordList.length;
+  return wordList[index];
+}
+
+function openWordPopup() {
+  const wordData = getWordOfTheDay();
+  document.getElementById("popupWord").textContent = wordData.word;
+  document.getElementById("popupMeaning").textContent = wordData.meaning;
+  document.getElementById("popupSynonyms").textContent = wordData.synonyms.join(", ");
+  document.getElementById("popupAntonyms").textContent = wordData.antonyms.join(", ");
+  document.getElementById("wordPopup").style.display = "flex";
+}
+
+function closeWordPopup() {
+  document.getElementById("wordPopup").style.display = "none";
+}
+</script> 
+
+
