@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>News Feed | LingoLift</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
   <style>
     :root {
       --blue-light: #cce3ff;
@@ -14,12 +13,54 @@
       --text-dark: #1b2a3a;
     }
 
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: 'Poppins', sans-serif;
       background: radial-gradient(circle at top left, var(--blue-light), var(--blue-mid), var(--blue-dark));
       color: var(--text-dark);
       transition: background 0.5s ease, color 0.5s ease;
+      min-height: 100vh;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+      color: white;
+    }
+
+    body::after {
+      content: "LingoLift";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 6rem;
+      color: rgba(12, 33, 75, 0.25);
+      font-weight: 700;
+      font-style: italic;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 6px rgba(51, 102, 204, 0.3);
+      pointer-events: none;
+      z-index: 0;
+      user-select: none;
+    }
+
+    .menu-btn {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background-color: var(--blue-dark);
+      color: white;
+      font-size: 1.5rem;
+      padding: 0.5rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 10;
+      border: none;
     }
 
     .dark-toggle {
@@ -35,11 +76,69 @@
       z-index: 10;
     }
 
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -260px;
+      width: 250px;
+      height: 100%;
+      background-color: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      padding: 2rem 1rem;
+      transition: left 0.3s ease;
+      z-index: 9;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar h3 {
+      margin-bottom: 1rem;
+      color: var(--blue-dark);
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 1rem;
+      font-weight: 600;
+      background-color: rgba(255,255,255,0.1);
+      padding: 0.7rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .sidebar ul li:hover {
+      background-color: rgba(255,255,255,0.2);
+    }
+
+    .sidebar ul li a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: white;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      cursor: pointer;
+    }
+
     .main-content {
       padding: 2rem 1rem;
       max-width: 900px;
       margin: auto;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
     header h1 {
@@ -77,7 +176,6 @@
       background-color: rgba(255,255,255,0.3);
     }
 
-    /* Modal Styling */
     .modal {
       display: none;
       position: fixed;
@@ -111,22 +209,13 @@
       font-size: 0.95rem;
     }
 
-    .close-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: transparent;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #333;
-    }
-
     footer {
       text-align: center;
       padding: 2rem;
       font-size: 0.9rem;
       color: #3c5e7e;
+      position: relative;
+      z-index: 1;
     }
 
     @media (max-width: 600px) {
@@ -139,8 +228,30 @@
 </head>
 <body>
 
+  <!-- Sidebar + Toggles -->
+  <button class="menu-btn" onclick="toggleSidebar()">☰</button>
   <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
 
+  <nav id="sidebar" class="sidebar">
+    <button class="close-btn" onclick="toggleSidebar()" type="button">✖</button>
+    <h3>Features</h3>
+    <ul>
+      <li><a href="index.html">🏠 Home</a></li>
+      <li><a href="translator.html">🌐 Language Translator</a></li>
+      <li><a href="news.html">📰 News Feed</a></li>
+      <li><a href="email.html">✉️ Email Grammar Analysis</a></li>
+      <li><a href="chatbot.html">🤖 AI Chatbot</a></li>
+      <li>📊 Pronunciation Scoring</li>
+      <li>📚 Learning Module</li>
+      <li>💼 HR Interview Practice</li>
+      <li>🧑‍🤝‍🧑 Group Discussion Review</li>
+      <li>❓ MCQ Quiz</li>
+      <li>⏱️ Extempore</li>
+      <li>🎧 Listening-Based Speaking</li>
+    </ul>
+  </nav>
+
+  <!-- Main Content -->
   <main class="main-content">
     <header>
       <h1>LingoLift</h1>
@@ -160,7 +271,7 @@
   <!-- Modal -->
   <div class="modal" id="newsModal">
     <div class="modal-content">
-      <button class="close-btn" onclick="closeModal()">✖</button>
+      <button class="close-btn" onclick="closeModal()" type="button">✖</button>
       <h2 id="modalTitle">Category</h2>
       <div id="modalBody">
         <p>Loading news...</p>
@@ -168,20 +279,26 @@
     </div>
   </div>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 LingoLift. Built with ❤ by ISHI.</p>
   </footer>
 
+  <!-- Script -->
   <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+
     function toggleDarkMode() {
       document.body.classList.toggle("dark-mode");
     }
 
     function openModal(category) {
+      document.body.style.overflow = "hidden";
       document.getElementById("modalTitle").innerText = category + " News";
       const body = document.getElementById("modalBody");
 
-      // Sample news per category
       const newsData = {
         International: [
           "Global summit held to discuss climate goals.",
@@ -210,32 +327,9 @@
 
     function closeModal() {
       document.getElementById("newsModal").style.display = "none";
+      document.body.style.overflow = "auto";
     }
   </script>
-</body>
-</html>
 
-    <h2>🎓 Education</h2>
-    <div class="news-section">
-      <div class="news-card">
-        <strong>NEP Rollout</strong>
-        <p>Top universities begin implementing New Education Policy modules.</p>
-      </div>
-      <div class="news-card">
-        <strong>Online Learning Growth</strong>
-        <p>EdTech platforms report 40% increase in student engagement.</p>
-      </div>
-    </div>
-
-    <footer>
-      <p>&copy; 2025 LingoLift. Built with ❤ by ISHI.</p>
-    </footer>
-  </main>
-
-  <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
-    }
-  </script>
 </body>
 </html>
