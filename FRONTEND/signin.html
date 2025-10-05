@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>University Sign In | LingoLift</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --blue-light: #cce3ff;
+      --blue-mid: #99c2ff;
+      --blue-dark: #3366cc;
+      --text-dark: #1b2a3a;
+      --text-light: #ffffff;
+      --glass-bg: rgba(255, 255, 255, 0.15);
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, var(--blue-light), var(--blue-mid), var(--blue-dark));
+      color: var(--text-dark);
+      transition: background 0.5s ease, color 0.5s ease;
+      min-height: 100vh;
+      padding-top: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(to bottom right, #0f2027, #203a43, #2c5364);
+      color: var(--text-light);
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1rem 2rem;
+      background-color: var(--blue-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .nav-left h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: white;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .nav-right a:hover {
+      color: #aad4ff;
+      transform: translateY(-2px);
+    }
+
+    .dark-toggle {
+      background-color: white;
+      color: var(--blue-dark);
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .dark-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    body.dark-mode .navbar {
+      background-color: #1a2b4c;
+    }
+
+    body.dark-mode .nav-right a {
+      color: #aad4ff;
+    }
+
+    body.dark-mode .dark-toggle {
+      background-color: #aad4ff;
+      color: #1a2b4c;
+    }
+
+    .signin-box {
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .signin-box h2 {
+      margin-bottom: 1.5rem;
+      color: var(--blue-dark);
+    }
+
+    body.dark-mode .signin-box h2 {
+      color: var(--text-light);
+    }
+
+    .signin-box input {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    body.dark-mode .signin-box input {
+      background-color: rgba(255,255,255,0.08);
+      color: white;
+      border: 1px solid #555;
+    }
+
+    .signin-box button {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: var(--blue-dark);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .signin-box button:hover {
+      background-color: #254b9e;
+      transform: scale(1.05);
+    }
+
+    .signin-box p {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .signin-box a {
+      color: var(--blue-dark);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    body.dark-mode .signin-box a {
+      color: #aad4ff;
+    }
+
+    @media (max-width: 600px) {
+      .nav-right {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 1rem;
+      }
+
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-left">
+      <h1>LingoLift</h1>
+    </div>
+    <div class="nav-right">
+      
+      <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+    </div>
+  </nav>
+
+  <div class="signin-box">
+    <h2> Sign In</h2>
+    <input type="text" placeholder="University Roll Number" required />
+    <input type="text" placeholder="Full Name" required />
+    <input type="email" placeholder="University Email" required />
+    <input type="password" placeholder="Create Password" required />
+    <button onclick="submitSignIn()">Sign In</button>
+    <p>Already registered? <a href="login.html">Login here</a></p>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+      const btn = document.querySelector('.dark-toggle');
+      btn.textContent = document.body.classList.contains('dark-mode') ? '☀' : '🌙';
+    }
+
+    function submitSignIn() {
+      alert("Sign In successful! (Demo only)");
+    }
+  </script>
+</body>
+</html>
