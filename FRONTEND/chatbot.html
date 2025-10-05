@@ -1,1 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chatbot | LingoLift</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --blue-light: #cce3ff;
+      --blue-mid: #99c2ff;
+      --blue-dark: #3366cc;
+      --text-dark: #1b2a3a;
+    }
 
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, var(--blue-light), var(--blue-mid), var(--blue-dark));
+      color: var(--text-dark);
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    .dark-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background-color: var(--blue-dark);
+      color: white;
+      border: none;
+      padding: 0.6rem;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .main-content {
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    header img {
+      width: 60px;
+      border-radius: 50%;
+      background-color: white;
+      padding: 0.3rem;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      color: var(--blue-dark);
+      margin: 0;
+    }
+
+    .chat-window {
+      background-color: rgba(255,255,255,0.2);
+      backdrop-filter: blur(6px);
+      border-radius: 12px;
+      padding: 1rem;
+      height: 400px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .chat-bubble {
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      max-width: 80%;
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+
+    .chat-bubble.user {
+      background-color: var(--blue-mid);
+      align-self: flex-end;
+      color: var(--text-dark);
+    }
+
+    .chat-bubble.ai {
+      background-color: var(--blue-dark);
+      align-self: flex-start;
+      color: white;
+    }
+
+    #chat-form {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    #chat-form input {
+      flex: 1;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+      background-color: rgba(255,255,255,0.2);
+      color: var(--text-dark);
+    }
+
+    .cta-btn {
+      background-color: var(--blue-dark);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .cta-btn:hover {
+      transform: scale(1.05);
+      background-color: #254b9e;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #3c5e7e;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      .chat-window {
+        height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+
+  <main class="main-content">
+    <header>
+      <img src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png" alt="AI Bot" />
+      <h1>AI Chatbot</h1>
+    </header>
+
+    <div class="chat-window" id="chat-window">
+      <div class="chat-bubble ai">👋 Hello! I'm your LingoLift assistant. Ask me anything about English, interviews, or grammar.</div>
+    </div>
+
+    <form id="chat-form">
+      <input type="text" id="userInput" placeholder="Type your message..." required />
+      <button type="submit" class="cta-btn">Send</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 LingoLift. Built with ❤ by the creator.</p>
+  </footer>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('userInput');
+    const windowEl = document.getElementById('chat-window');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const userMsg = input.value.trim();
+      if (userMsg) {
+        const userBubble = document.createElement('div');
+        userBubble.className = 'chat-bubble user';
+        userBubble.textContent = userMsg;
+        windowEl.appendChild(userBubble);
+
+        const aiBubble = document.createElement('div');
+        aiBubble.className = 'chat-bubble ai';
+        aiBubble.textContent = generateReply(userMsg);
+        windowEl.appendChild(aiBubble);
+
+        input.value = '';
+        windowEl.scrollTop = windowEl.scrollHeight;
+      }
+    });
+
+    function generateReply(message) {
+      const msg = message.toLowerCase();
+      if (msg.includes("hello") || msg.includes("hi")) {
+        return "👋 Hi there! Ready to improve your communication skills?";
+      } else if (msg.includes("grammar")) {
+        return "📚 Grammar tip: Use 'who' for subjects and 'whom' for objects. Example: 'Who called you?' vs 'Whom did you call?'";
+      } else if (msg.includes("interview")) {
+        return "💼 Interview tip: Structure your answers using STAR—Situation, Task, Action, Result.";
+      } else if (msg.includes("thank")) {
+        return "😊 You're welcome! Keep practicing and you'll master it.";
+      } else if (msg.includes("how are you")) {
+        return "🤖 I'm functioning at 100%! How can I assist you today?";
+      } else {
+        return "🤖 I'm still learning, but I understood your message. Try asking about grammar, interview tips, or English phrases!";
+      }
+    }
+  </script>
+</body>
+</html>
