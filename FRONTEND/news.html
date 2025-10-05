@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>News Feed | LingoLift</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --blue-light: #cce3ff;
+      --blue-mid: #99c2ff;
+      --blue-dark: #3366cc;
+      --text-dark: #1b2a3a;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, var(--blue-light), var(--blue-mid), var(--blue-dark));
+      color: var(--text-dark);
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    .dark-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background-color: var(--blue-dark);
+      color: white;
+      border: none;
+      padding: 0.6rem;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .main-content {
+      padding: 2rem 1rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    header {
+      text-align: center;
+      padding-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      color: var(--blue-dark);
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+      color: #3c5e7e;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      margin-top: 2rem;
+      color: var(--blue-dark);
+    }
+
+    .news-section {
+      margin-top: 1rem;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .news-card {
+      background-color: rgba(255,255,255,0.2);
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .news-card:hover {
+      transform: translateY(-3px);
+      background-color: rgba(255,255,255,0.3);
+    }
+
+    .news-card strong {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      color: var(--blue-dark);
+    }
+
+    p {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #3c5e7e;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+
+  <main class="main-content">
+    <header>
+      <h1>LingoLift</h1>
+      <p class="tagline">Speak. Learn. Improve.</p>
+    </header>
+
+    <h2>🌍 International</h2>
+    <div class="news-section">
+      <div class="news-card">
+        <strong>Global Summit on Climate</strong>
+        <p>World leaders gathered to discuss urgent climate goals and funding strategies.</p>
+      </div>
+      <div class="news-card">
+        <strong>Travel Updates</strong>
+        <p>Visa-free travel agreements signed between multiple Asian countries.</p>
+      </div>
+    </div>
+
+    <h2>🏛️ Politics</h2>
+    <div class="news-section">
+      <div class="news-card">
+        <strong>Election Reform Bill</strong>
+        <p>New legislation proposes digital voting and youth representation.</p>
+      </div>
+      <div class="news-card">
+        <strong>Parliament Debate</strong>
+        <p>Opposition parties raise concerns over education budget cuts.</p>
+      </div>
+    </div>
+
+    <h2>💻 Technology</h2>
+    <div class="news-section">
+      <div class="news-card">
+        <strong>AI in Education</strong>
+        <p>Startups launch AI tutors for personalized learning experiences.</p>
+      </div>
+      <div class="news-card">
+        <strong>Cybersecurity Alert</strong>
+        <p>Major breach reported in cloud storage platforms—users advised to update passwords.</p>
+      </div>
+    </div>
+
+    <h2>🎓 Education</h2>
+    <div class="news-section">
+      <div class="news-card">
+        <strong>NEP Rollout</strong>
+        <p>Top universities begin implementing New Education Policy modules.</p>
+      </div>
+      <div class="news-card">
+        <strong>Online Learning Growth</strong>
+        <p>EdTech platforms report 40% increase in student engagement.</p>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 LingoLift. Built with ❤ by ISHI.</p>
+    </footer>
+  </main>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+</body>
+</html>
