@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Language Translator | LingoLift</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --blue-light: #cce3ff;
+      --blue-mid: #99c2ff;
+      --blue-dark: #3366cc;
+      --text-dark: #1b2a3a;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, var(--blue-light), var(--blue-mid), var(--blue-dark));
+      color: var(--text-dark);
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    .dark-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background-color: var(--blue-dark);
+      color: white;
+      border: none;
+      padding: 0.6rem;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .main-content {
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding-bottom: 1rem;
+    }
+
+    .header-left h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      color: var(--blue-dark);
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+      color: #3c5e7e;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      margin-top: 2rem;
+    }
+
+    p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .language-select {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .language-select label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+
+    .language-select select {
+      padding: 0.5rem;
+      border-radius: 6px;
+      min-width: 120px;
+    }
+
+    #inputText {
+      padding: 0.6rem;
+      width: 80%;
+      max-width: 400px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 1rem;
+    }
+
+    .cta-btn {
+      margin: 2rem auto 1rem;
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background-color: var(--blue-dark);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .cta-btn:hover {
+      background-color: #254b9e;
+      transform: scale(1.05);
+    }
+
+    #outputArea {
+      margin-top: 2rem;
+      font-size: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #3c5e7e;
+    }
+
+  </style>
+</head>
+<body>
+
+  <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+
+  <main class="main-content">
+    <header>
+      <div class="header-left">
+        <h1>LingoLift</h1>
+      </div>
+    </header>
+
+    <p class="tagline">Speak. Learn. Improve.</p>
+
+    <h2>🌐 Language Translator</h2>
+    <p>Select the languages and enter your word or phrase below.</p>
+
+    <div class="language-select">
+      <div>
+        <label for="fromLang">From:</label>
+        <select id="fromLang">
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+          <option value="fr">French</option>
+          <option value="es">Spanish</option>
+          <option value="de">German</option>
+          <option value="zh">Chinese</option>
+          <option value="ja">Japanese</option>
+          <option value="ru">Russian</option>
+          <option value="ar">Arabic</option>
+          <option value="pt">Portuguese</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="toLang">To:</label>
+        <select id="toLang">
+          <option value="en">English</option>
+          <option value="hi">Hindi</option>
+          <option value="fr">French</option>
+          <option value="es">Spanish</option>
+          <option value="de">German</option>
+          <option value="zh">Chinese</option>
+          <option value="ja">Japanese</option>
+          <option value="ru">Russian</option>
+          <option value="ar">Arabic</option>
+          <option value="pt">Portuguese</option>
+        </select>
+      </div>
+    </div>
+
+    <input type="text" id="inputText" placeholder="Enter word or phrase..." />
+    <button class="cta-btn" onclick="translateText()">Translate</button>
+
+    <div id="outputArea">
+      <p><strong>Translation:</strong> <span id="translatedText">—</span></p>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 LingoLift. Built with ❤ by ISHI.</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    function translateText() {
+      const input = document.getElementById("inputText").value.trim();
+      const from = document.getElementById("fromLang").value;
+      const to = document.getElementById("toLang").value;
+
+      if (!input) {
+        alert("Please enter a word or phrase.");
+        return;
+      }
+
+      // Demo translation logic (replace with real API later)
+      document.getElementById("translatedText").innerText = `Translated '${input}' from ${from} to ${to}`;
+    }
+  </script>
+</body>
+</html>
+
