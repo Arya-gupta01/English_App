@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voice Test</title>
+</head>
+<body>
+  <button onclick="startVoiceInput()">🎤 Speak</button>
+  <textarea id="output" rows="5" cols="50"></textarea>
+
+  <script>
+    function startVoiceInput() {
+      try {
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'en-US';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.start();
+
+        recognition.onresult = function(event) {
+          const transcript = event.results[0][0].transcript;
+          document.getElementById("output").value = transcript;
+        };
+
+        recognition.onerror = function(event) {
+          alert("🎤 Voice input error: " + event.error);
+        };
+      } catch (err) {
+        alert("🎤 Voice input not supported in this browser.");
+      }
+    }
+    recognition.onstart = function() {
+  console.log("🎤 Voice recognition started");
+};
+
+recognition.onend = function() {
+  console.log("🎤 Voice recognition ended");
+};
+
+recognition.onabort = function() {
+  console.log("⚠️ Voice recognition aborted");
+};
+  </script>
+</body>
+</html>
