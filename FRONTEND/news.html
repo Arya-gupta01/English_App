@@ -39,11 +39,7 @@
       padding: 2rem 1rem;
       max-width: 900px;
       margin: auto;
-    }
-
-    header {
       text-align: center;
-      padding-bottom: 1rem;
     }
 
     header h1 {
@@ -58,41 +54,72 @@
       color: #3c5e7e;
     }
 
-    h2 {
-      font-size: 1.6rem;
-      margin-top: 2rem;
-      color: var(--blue-dark);
-    }
-
-    .news-section {
-      margin-top: 1rem;
-      display: grid;
+    .category-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 1rem;
+      margin-top: 2rem;
     }
 
-    .news-card {
+    .category-card {
       background-color: rgba(255,255,255,0.2);
-      padding: 1rem;
+      padding: 1rem 2rem;
       border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: transform 0.3s ease, background-color 0.3s ease;
     }
 
-    .news-card:hover {
-      transform: translateY(-3px);
+    .category-card:hover {
+      transform: scale(1.05);
       background-color: rgba(255,255,255,0.3);
     }
 
-    .news-card strong {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-size: 1.1rem;
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      text-align: left;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
       color: var(--blue-dark);
     }
 
-    p {
+    .modal-content p {
+      margin: 1rem 0;
       font-size: 0.95rem;
-      margin: 0;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #333;
     }
 
     footer {
@@ -100,6 +127,13 @@
       padding: 2rem;
       font-size: 0.9rem;
       color: #3c5e7e;
+    }
+
+    @media (max-width: 600px) {
+      .category-card {
+        width: 100%;
+        text-align: center;
+      }
     }
   </style>
 </head>
@@ -113,41 +147,73 @@
       <p class="tagline">Speak. Learn. Improve.</p>
     </header>
 
-    <h2>🌍 International</h2>
-    <div class="news-section">
-      <div class="news-card">
-        <strong>Global Summit on Climate</strong>
-        <p>World leaders gathered to discuss urgent climate goals and funding strategies.</p>
-      </div>
-      <div class="news-card">
-        <strong>Travel Updates</strong>
-        <p>Visa-free travel agreements signed between multiple Asian countries.</p>
-      </div>
-    </div>
+    <h2>Select a News Category</h2>
 
-    <h2>🏛️ Politics</h2>
-    <div class="news-section">
-      <div class="news-card">
-        <strong>Election Reform Bill</strong>
-        <p>New legislation proposes digital voting and youth representation.</p>
-      </div>
-      <div class="news-card">
-        <strong>Parliament Debate</strong>
-        <p>Opposition parties raise concerns over education budget cuts.</p>
-      </div>
+    <div class="category-grid">
+      <div class="category-card" onclick="openModal('International')">🌍 International</div>
+      <div class="category-card" onclick="openModal('Politics')">🏛️ Politics</div>
+      <div class="category-card" onclick="openModal('Technology')">💻 Technology</div>
+      <div class="category-card" onclick="openModal('Education')">🎓 Education</div>
     </div>
+  </main>
 
-    <h2>💻 Technology</h2>
-    <div class="news-section">
-      <div class="news-card">
-        <strong>AI in Education</strong>
-        <p>Startups launch AI tutors for personalized learning experiences.</p>
-      </div>
-      <div class="news-card">
-        <strong>Cybersecurity Alert</strong>
-        <p>Major breach reported in cloud storage platforms—users advised to update passwords.</p>
+  <!-- Modal -->
+  <div class="modal" id="newsModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">✖</button>
+      <h2 id="modalTitle">Category</h2>
+      <div id="modalBody">
+        <p>Loading news...</p>
       </div>
     </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 LingoLift. Built with ❤ by ISHI.</p>
+  </footer>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    function openModal(category) {
+      document.getElementById("modalTitle").innerText = category + " News";
+      const body = document.getElementById("modalBody");
+
+      // Sample news per category
+      const newsData = {
+        International: [
+          "Global summit held to discuss climate goals.",
+          "Visa-free travel agreements signed across Asia."
+        ],
+        Politics: [
+          "Election reforms proposed in Parliament.",
+          "Youth-led protests spark national debate."
+        ],
+        Technology: [
+          "AI tools reshape education and hiring.",
+          "New smartphone breaks sales records."
+        ],
+        Education: [
+          "NEP 2025 rollout begins in top universities.",
+          "Online learning platforms see 40% growth."
+        ]
+      };
+
+      body.innerHTML = newsData[category]
+        .map(item => `<p>• ${item}</p>`)
+        .join("");
+
+      document.getElementById("newsModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("newsModal").style.display = "none";
+    }
+  </script>
+</body>
+</html>
 
     <h2>🎓 Education</h2>
     <div class="news-section">
