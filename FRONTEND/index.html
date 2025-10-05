@@ -1,1 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LingoLift | Speak. Learn. Improve.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+  <!-- Menu Button (Three-Bar Hamburger) -->
+  <div class="menu-btn" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- Auth Buttons Top Right -->
+  <!-- <div class="auth-buttons-top">
+    <button onclick="signIn()">Sign In</button>
+    <button onclick="signOut()">Login</button>
+  </div> -->
+
+  <div class="auth-buttons-top">
+  <a href="signin.html" style="text-decoration:none;">
+    <button>Sign In</button>
+  </a>
+  <a href="login.html" style="text-decoration:none;">
+    <button>Login</button>
+  </a>
+</div>
+  <!-- Dark Mode Toggle -->
+  <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+
+  <!-- Sidebar Menu -->
+  <nav id="slideMenu" class="slide-menu">
+    <button class="close-menu" onclick="toggleMenu()">✖</button>
+    <h3>Features</h3>
+    <ul>
+      <li>📊 Pronunciation Scoring</li>
+      <li>📚 Learning Module</li>
+   <li><a href="translator.html" style="text-decoration:none;color:inherit;">🌐 Language Translator</a></li>
+     <div class="feature-card" onclick="openWordPopup()">🗣 Word of the Day</div>
+      <li>📰 News Feed</li>
+      <li>✉ Email Grammar Analysis</li>
+      <li>💼 HR Interview Practice</li>
+      <li>🧑‍🤝‍🧑 Group Discussion Review</li>
+      <li>❓ MCQ Quiz</li>
+      <li>⏱ Extempore (1 min)</li>
+      <li>🎧 Listening-Based Speaking</li>
+      <li>🤖 AI Chatbot</li>
+    </ul>
+  </nav>
+
+
+
+  
+  <!-- Main Content -->
+  <main class="main-content">
+    
+    <!-- Header -->
+    <header>
+      <h1>LingoLift</h1>
+      <p class="tagline">Speak. Learn. Improve.</p>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features">
+      <h2>Explore Features</h2>
+      <div class="features-grid">
+        <div class="feature-card">📊 Pronunciation Scoring</div>
+        <div class="feature-card">📚 Learning Module</div>
+       <a href="translator.html" style="text-decoration:none;">
+  <div class="feature-card">🌐 Language Translator</div>
+</a>
+        <!-- <div class="feature-card">🗣 Word of the Day</div> -->
+         <div class="feature-card" onclick="openWordPopup()">🗣 Word of the Day</div>
+        <div class="feature-card">📰 News Feed</div>
+        <div class="feature-card">✉ Email Grammar Analysis</div>
+        <div class="feature-card">💼 HR Interview Practice</div>
+        <div class="feature-card">🧑‍🤝‍🧑 Group Discussion Review</div>
+        <div class="feature-card">❓ MCQ Quiz</div>
+        <div class="feature-card">⏱ Extempore (1 min)</div>
+        <div class="feature-card">🎧 Listening-Based Speaking</div>
+        <div class="feature-card">🤖 AI Chatbot</div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 LingoLift. Built with ❤ by ISHI.</p>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+  <!-- Word of the Day Popup -->
+<div class="popup-overlay" id="wordPopup">
+  <div class="popup-card">
+    <button class="close-popup" onclick="closeWordPopup()">✖</button>
+    <h2>📚 Word of the Day</h2>
+    <h3 id="popupWord">—</h3>
+    <p><strong>Meaning:</strong> <span id="popupMeaning">—</span></p>
+    <p><strong>Synonyms:</strong> <span id="popupSynonyms">—</span></p>
+    <p><strong>Antonyms:</strong> <span id="popupAntonyms">—</span></p>
+  </div>
+</div>
+</body>
+</html>
