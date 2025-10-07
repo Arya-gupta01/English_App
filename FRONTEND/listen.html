@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LingoLift | Listening-Based Speaking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .listening-page .listening-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .listening-page .controls button {
+      background-color: var(--blue-dark);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0.3rem;
+    }
+    .listening-page .controls button:hover {
+      background-color: #254b9e;
+      transform: translateY(-2px);
+    }
+    .recording-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+    .record-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: red;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.6; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .results {
+      margin-top: 2rem;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+    .results p {
+      margin: 0.5rem 0;
+    }
+    .highlight {
+      color: red;
+      font-weight: bold;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="listening-page">
+  <div class="menu-btn" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+<!-- 
+  <div class="auth-buttons-top">
+    <a href="signin.html"><button>Sign Up</button></a>
+    <a href="login.html"><button>Login</button></a>
+  </div> -->
+
+  <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+
+  <nav id="slideMenu" class="slide-menu">
+    <button class="close-menu" onclick="toggleMenu()">✖</button>
+    <h3>Features</h3>
+    <ul>
+      <li><a href="Pronunciation.html">📊Pronounciation Scoring</a></li>
+      <li><a href="translator.html">🌐 Language Translator</a></li>
+      <li><div class="feature-card" onclick="openWordPopup()">🗣 Word of the Day</div></li>
+      <li><a href="news.html" class="feature-card">📰 News Feed</a></li>
+      <li><a href="email.html">✉ Email Grammar Analysis</a></li>
+      <li><a href="hr-interview.html">💼 HR Interview Practice</a></li>
+      <li><a href="listen.html">🎧 Listening-Based Speaking</a></li>
+
+         <li>🧑‍🤝‍🧑 Group Discussion Review</li>
+    <li>❓ MCQ Quiz</li>
+    <li><a href="extempore.html" style="text-decoration:none;color:inherit;">⏱ Extempore (1 min)</a></li>
+    <li><a href="listen.html" style="text-decoration:none;color:inherit;">🎧 Listening-Based Speaking</a></li>
+    <li><a href="chatbot.html">🤖 AI Chatbot</a></li>
+
+
+
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <header>
+      <h1>Listening-Based Speaking</h1>
+      <p class="tagline">Speak. Learn. Improve.</p>
+    </header>
+
+    <section class="listening-container">
+      <div class="controls">
+        <button id="newLineBtn">🎲 New Line</button>
+        <button id="playBtn">🔊 Play</button>
+        <button id="recordBtn" disabled>🎙 Record</button>
+        <button id="submitBtn" style="display:none;">✅ Submit</button>
+      </div>
+
+      <div class="recording-indicator" id="recordingIndicator" style="display:none;">
+        <div class="record-dot"></div>
+        <span id="timer">0s</span>
+      </div>
+
+      <div class="results" id="resultsContainer" style="display:none;">
+        <p><strong>🎯 Target:</strong> <span id="targetCompare"></span></p>
+        <p><strong>🗣 You Said:</strong> <span id="userTranscript"></span></p>
+        <p id="accuracyScore"></p>
+      </div>
+
+  
+      <div id="historyModal" style="display:none;"></div>
+    </section>
+
+    <footer>
+      <p>&copy; 2025 LingoLift. Built with ❤ by ISHI.</p>
+    </footer>
+
+  <script src="script.js"></script>
+  <script src="listen.js"></script>
+</body>
+</html>  
