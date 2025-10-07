@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LingoLift | HR Interview Practice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .interview-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 3rem;
+      gap: 1rem;
+    }
+
+    .accordion-card {
+      background-color: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      padding: 2rem 2.5rem;
+      border-radius: 12px;
+      max-width: 700px;
+      width: 95%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+
+    .accordion-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-align: center;
+      color: var(--blue-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .accordion-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, opacity 0.5s ease;
+      opacity: 0;
+    }
+
+    .accordion-card.active .accordion-answer {
+      max-height: 800px;
+      opacity: 1;
+      margin-top: 1rem;
+    }
+
+    .accordion-answer p {
+      font-size: 1.1rem;
+      color: var(--text-dark);
+      text-align: center;
+      white-space: pre-line;
+    }
+
+    body.dark-mode .accordion-card h3,
+    body.dark-mode .accordion-answer p {
+      color: var(--text-light);
+    }
+
+    @media (max-width: 768px) {
+      .accordion-card {
+        padding: 1.5rem;
+      }
+
+      .accordion-card h3 {
+        font-size: 1.1rem;
+      }
+
+      .accordion-answer p {
+        font-size: 1rem;
+      }
+    }
+
+/* Sidebar Menu Items */
+.slide-menu ul {
+  list-style: none;
+  padding: 0;
+}
+
+.slide-menu ul li {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  background-color: rgba(255,255,255,0.1);
+  padding: 0.7rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hover effect */
+.slide-menu ul li:hover {
+  background-color: rgba(255,255,255,0.2);
+  transform: translateX(5px);
+}
+
+/* Feature Card Styling (for Word of the Day & News Feed only) */
+.slide-menu .feature-card {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(6px);
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.slide-menu .feature-card:hover {
+  transform: translateY(-3px);
+  background-color: rgba(255,255,255,0.25);
+}
+  </style>
+</head>
+<body>
+
+  <div class="menu-btn" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <!-- <div class="auth-buttons-top">
+    <a href="signin.html"><button>Sign Up</button></a>
+    <a href="login.html"><button>Login</button></a>
+  </div> -->
+
+  <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+<nav id="slideMenu" class="slide-menu">
+  <button class="close-menu" onclick="toggleMenu()">✖</button>
+  <h3>Features</h3>
+  <ul>
+    <li>📊 Pronunciation Scoring</li>
+    <li>📚 Learning Module</li>
+    <li><a href="translator.html" style="text-decoration:none;color:inherit;">🌐 Language Translator</a></li>
+
+    <!-- Fixed Overlap Items -->
+    <li style="margin-bottom: 1rem; position: relative; z-index: 1;">
+      <div class="feature-card" onclick="openWordPopup()">🗣 Word of the Day</div>
+    </li>
+    <li style="margin-bottom: 1rem; position: relative; z-index: 1;">
+      <a href="news.html" class="feature-card">📰 News Feed</a>
+    </li>
+
+    <li><a href="email.html" style="text-decoration:none;color:inherit;">✉ Email Grammar Analysis</a></li>
+    <li>💼 HR Interview Practice</li>
+    <li>🧑‍🤝‍🧑 Group Discussion Review</li>
+    <li>❓ MCQ Quiz</li>
+    <li><a href="extempore.html" style="text-decoration:none;color:inherit;">⏱ Extempore (1 min)</a></li>
+    <li><a href="listening-speaking.html" style="text-decoration:none;color:inherit;">🎧 Listening-Based Speaking</a></li>
+    <li><a href="chatbot.html" style="text-decoration:none;color:inherit;">🤖 AI Chatbot</a></li>
+  </ul>
+</nav>
+  <main class="main-content">
+    <header>
+      <h1>HR Interview Practice Questions</h1>
+      <p class="tagline">Speak. Learn. Improve.</p>
+    </header>
+
+    <section class="interview-container" id="accordionSection">
+      <!-- Cards will be injected here -->
+    </section>
+
+    <footer>
+      <p>&copy; 2025 LingoLift. Built with ❤ by ISHI.</p>
+    </footer>
+  </main>
+
+  <div class="popup-overlay" id="wordPopup">
+    <div class="popup-card">
+      <button class="close-popup" onclick="closeWordPopup()">✖</button>
+      <h2>📚 Word of the Day</h2>
+      <h3 id="popupWord">—</h3>
+      <p><strong>Meaning:</strong> <span id="popupMeaning">—</span></p>
+      <p><strong>Synonyms:</strong> <span id="popupSynonyms">—</span></p>
+      <p><strong>Antonyms:</strong> <span id="popupAntonyms">—</span></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    const qaList = [
+      {
+        q: "💬 1. Tell me about yourself",
+        a: `“I’m a passionate and motivated individual with a background in computer science. I enjoy solving real-world problems through technology and have experience in programming languages like Java, Python, and JavaScript. I like working on projects that allow me to learn new things and collaborate with others. My goal is to start my career in a role where I can apply my skills, grow professionally, and contribute to the company’s success.”`
+      },
+      {
+        q: "💪 2. What are your strengths?",
+        a: `Talk about qualities that make you a good employee and match the job requirements.\nExample:\n“My strengths include quick learning, good communication skills, and adaptability to new environments. I’m a team player and always try to maintain a positive attitude. I also stay organized and manage my time effectively, which helps me meet deadlines and deliver quality work.”`
+      },
+      {
+        q: "⚖️ 3. What are your weaknesses?",
+        a: `The best way to answer this is to mention a genuine weakness and then explain how you’re improving it.\nExample:\n“I sometimes spend too much time trying to make my work perfect. However, I’ve learned to set time limits for tasks and focus on balancing quality with efficiency. This approach helps me complete work faster while maintaining accuracy.”`
+      },
+      {
+        q: "💼 4. Why should we hire you?",
+        a: `Highlight how your skills, attitude, and values align with what the company needs.\nExample:\n“You should hire me because I’m hardworking, reliable, and eager to learn. I have the technical and interpersonal skills required for this role, and I’m confident I can contribute positively to the team. I’m also open to challenges and committed to continuous improvement, which will help me grow along with the organization.”`
+      },
+      {
+        q: "🎯 5. Where do you see yourself in five years?",
+        a: `Show that you have long-term goals and are serious about career growth.\nExample:\n“In five years, I see myself growing both professionally and personally. I aim to develop advanced skills in my field, take on more responsibilities, and contribute to impactful projects. I hope to be in a position where I can lead a team and help the organization achieve its goals.”`
+      }
+    ];
+
+    const container = document.getElementById("accordionSection");
+
+    qaList.forEach((item) => {
+      const card = document.createElement("div");
+      card.className = "accordion-card";
+      card.innerHTML = `
+        <h3>${item.q}</h3>
+        <div class="accordion-answer"><p>${item.a}</p></div>
+      `;
+      card.addEventListener("click", () => {
+        document.querySelectorAll(".accordion-card").forEach(c => {
+          if (c !== card) c.classList.remove("active");
+        });
+        card.classList.toggle("active");
+      });
+      container.appendChild(card);
+    });
+  </script>
+</body>
+</html>
